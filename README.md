@@ -29,7 +29,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 3. npm install
 4. npm run dev
 # https://laratrust.santigarcor.me/docs/6.x/usage/seeder.html#seeder-configuration-file
-<b> install Laratrust (untuk mengatur roel) </b>
+<b> install Laratrust (untuk mengatur role) </b>
 1. composer require santigarcor/laratrust
 2. php artisan vendor:publish --tag="laratrust"
 3. php artisan laratrust:setup
