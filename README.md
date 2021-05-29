@@ -43,3 +43,16 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 11. php artisan db:seed 
 12. buka di controller/Auth/RegisteredUserController.php tambah file untuk regristasi sesuai role :  $user->attachRole('sesuairole'); 
 13. tambah kan route untuk redirect lgoin awal = Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+# untuk save ip adress
+1. php artisan make:migration add_login_fields_to_users_table
+2. menambai tabel  = $table->datetime('last_login_time')->nullable();
+                     $table->string('last_login_ip')->nullable();
+3. php artisan make:listener Loginlistener
+4. buka LoginListener.php = $event->user->update([
+                                'last_login_time' => now('Asia/Jakarta'),
+                                'last_login_ip' => request()->getClientIp(),
+                            ]);
+5. app/Providers/EventServiceProvider.php tambai =  Login::class => [
+                                                                        LoginListener::class,
+                                                                    ],
+
