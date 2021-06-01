@@ -33,54 +33,54 @@
         
         
     </div>
-        {{-- modal --}}
-      <div class="modal fade" id="modal-info">
-            <div class="modal-dialog">
-            <div class="modal-content bg-info">
-                <div class="modal-header">
-                <h4 class="modal-title">Data Supplier</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                
-                    <form action="{{route('supplier.store')}}" method="post" id="forms">
-                        @csrf
-                        <div class="form-group">
-                            <label for=""> Nama Supplier</label>
-                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Supplier">
-                            <input type="text" hidden class="form-control" id="id" name="id" placeholder="Nama Supplier">
-                        </div>
-                        <div class="form-group">
-                            <label for=""> Telpon</label>
-                            <input type="text" onkeypress="return number(event)" class="form-control" id="telp" name="telp" placeholder="No. Telp">
-                        </div>
-                        <div class="form-group">
-                            <label for=""> E-mail</label>
-                            <input type="text" class="form-control" id="email" name="email" placeholder="Alamat Email">
-                        </div>
-                        <div class="form-group">
-                            <label for=""> No. Rekening</label>
-                            <input type="text" onkeypress="return number(event)" class="form-control" id="rekening" name="rekening" placeholder="Rekening">
-                        </div>
-                        <div class="form-group">
-                            <label for=""> Alamat</label>
-                            <textarea class="form-control" id="alamat" name="alamat" cols="30"></textarea>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" id="btn-tutup" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                            <button type="submit" id="simpan" class="btn btn-outline-light">Save</button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-            <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
     <br>
+    {{-- modal --}}
+  <div class="modal fade" id="modal-info">
+        <div class="modal-dialog">
+        <div class="modal-content bg-info">
+            <div class="modal-header">
+            <h4 class="modal-title">Data Supplier</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+            
+                <form action="{{route('supplier.store')}}" method="post" id="forms">
+                    @csrf
+                    <div class="form-group">
+                        <label for=""> Nama Supplier</label>
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Supplier">
+                        <input type="text" hidden class="form-control" id="id" name="id" placeholder="Nama Supplier">
+                    </div>
+                    <div class="form-group">
+                        <label for=""> Telpon</label>
+                        <input type="text" onkeypress="return number(event)" class="form-control" id="telp" name="telp" placeholder="No. Telp">
+                    </div>
+                    <div class="form-group">
+                        <label for=""> E-mail</label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Alamat Email">
+                    </div>
+                    <div class="form-group">
+                        <label for=""> No. Rekening</label>
+                        <input type="text" onkeypress="return number(event)" class="form-control" id="rekening" name="rekening" placeholder="Rekening">
+                    </div>
+                    <div class="form-group">
+                        <label for=""> Alamat</label>
+                        <textarea class="form-control" id="alamat" name="alamat" cols="30"></textarea>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" id="btn-tutup" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        <button type="submit" id="simpan" class="btn btn-outline-light">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
     <br>
 </x-app-layout>
 @stack('js')
@@ -134,6 +134,7 @@
                 console.log(res);
                 $('#btn-tutup').click()
                 $('#tabel').DataTable().ajax.reload()
+                $("#forms")[0].reset();
                 toastr.success(res.text, 'Sukses')
             },
             error : function (xhr) {
@@ -162,6 +163,7 @@
                  $('#rekening').val(res.rekening)
                  $('#email').val(res.email)
                  $('#btn-tambah').click()
+                 
             },
             error : function (xhr) {
                 console.log(xhr);

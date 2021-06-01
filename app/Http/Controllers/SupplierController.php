@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
-// use Illuminate\Routing\Controller as BaseContro;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
@@ -43,11 +43,36 @@ class SupplierController extends Controller
      public function store(Request $request)
      {
           // dd($request->all());
+          $rules = [
+               'nama' => 'required',
+               'telp' => 'required|min:12|unique:suppliers,telp',
+               'email' => 'required|unique:suppliers,email',
+               'rekening' => 'required|unique:suppliers,rekening',
+               'alamat' => 'required',
+          ];
+
+          $text = [
+               'nama.required' => 'Kolom nama tidak boleh kosong',
+               'telp.required' => 'Kolom telp tidak boleh kosong',
+               'telp.unique' => 'No telp udah terdaftar',
+               'telp.min' => 'No telp kurang dari 12 digit',
+               'email.required' => 'Kolom email tidak boleh kosong',
+               'email.unique' => 'Email udah terdaftar',
+               'rekening.required' => 'Kolom rekening tidak boleh kosong',
+               'rekening.unique' => 'No Rekening udah terdaftar',
+               'alamat.required' => 'Kolom alamat tidak boleh kosong',
+          ];
+
+          $validasi = Validator::make($request->all(),$rules, $text);
+          if ($validasi->fails()) {
+               return response()->json(['success' => 0, 'text' => $validasi->errors()->first()], 422);
+          }
+
           $simpan = Supplier::create($request->all());
           if ($simpan) {
                return response()->json(['text' => 'Data Berhasil Disimpan'], 200);
           }else {
-               return response()->json(['text' => 'Data Gagal Disimpan'], 400);
+               return response()->json(['text' => 'Data Gagal Disimpan'], 422);
           }
      }
 
@@ -61,6 +86,28 @@ class SupplierController extends Controller
      public function updates(Request $request)
      {
           // dd($request->all());
+          $rules = [
+               'nama' => 'required',
+               'telp' => 'required|min:12',
+               'email' => 'required',
+               'rekening' => 'required',
+               'alamat' => 'required',
+          ];
+
+          $text = [
+               'nama.required' => 'Kolom nama tidak boleh kosong',
+               'telp.required' => 'Kolom telp tidak boleh kosong',
+               'telp.min' => 'No telp kurang dari 12 digit',
+               'email.required' => 'Kolom email tidak boleh kosong',
+               'rekening.required' => 'Kolom rekening tidak boleh kosong',
+               'alamat.required' => 'Kolom alamat tidak boleh kosong',
+          ];
+
+          $validasi = Validator::make($request->all(), $rules, $text);
+          if ($validasi->fails()) {
+               return response()->json(['success' => 0, 'text' => $validasi->errors()->first()], 422);
+          }
+
           $data = Supplier::find($request->id);
           $simpan = $data->update($request->all());
           if ($simpan) {
