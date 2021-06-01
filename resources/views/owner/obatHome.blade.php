@@ -8,7 +8,7 @@
     
     <div class="card card-primary">
               <div class="card-header">
-                <h6 class="text-center">Data Supplier</h6>
+                <h6 class="text-center">Data obat</h6>
               </div>
     </div>
 
@@ -20,10 +20,11 @@
                     <thead>
                         <tr>
                             <th>Nama</th>
-                            <th>Telpon</th>
-                            <th>Email</th>
-                            <th>Rekening</th>
-                            <th>Alamat</th>
+                            <th>Kode</th>
+                            <th>Dosis</th>
+                            <th>Indikasi</th>
+                            <th>Kategori</th>
+                            <th>Satuan</th>
                             <th class="text-center"><button type="button" class="btn btn-primary btn-sm" id="btn-tambah" data-toggle="modal" data-target="#modal-info"> Tambah</button></th>
                         </tr>
                     </thead>
@@ -39,34 +40,48 @@
         <div class="modal-dialog">
         <div class="modal-content bg-info">
             <div class="modal-header">
-            <h4 class="modal-title">Data Supplier</h4>
+            <h4 class="modal-title">Data Obat</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
             
-                <form action="{{route('supplier.store')}}" method="post" id="forms">
+                <form action="{{route('obat.store')}}" method="post" id="forms">
                     @csrf
                     <div class="form-group">
-                        <label for=""> Nama Supplier</label>
-                        <input type="text" class="form-control" id="nama" name="nama" autocomplete="off" placeholder="Nama Supplier">
-                        <input type="text" hidden class="form-control" id="id" name="id" autocomplete="off" placeholder="Nama Supplier">
+                        <label for=""> Nama Obat</label>
+                        <input type="text" class="form-control" id="nama" autocomplete="off" name="nama" placeholder="Nama Obat">
+                        <input type="text" hidden class="form-control" id="id" name="id" autocomplete="off" placeholder="Nama Obat">
                     </div>
                     <div class="form-group">
-                        <label for=""> Telpon</label>
-                        <input type="text" onkeypress="return number(event)" class="form-control" id="telp" autocomplete="off" name="telp" placeholder="No. Telp">
+                        <label for=""> Kode</label>
+                        <input type="text" maxlength="8" class="form-control" id="kode" autocomplete="off" name="kode" placeholder="Kode">
                     </div>
                     <div class="form-group">
-                        <label for=""> E-mail</label>
-                        <input type="text" class="form-control" id="email" name="email" autocomplete="off" placeholder="Alamat Email">
+                        <label for=""> Dosis</label>
+                        <input type="text" class="form-control" id="dosis" name="dosis" autocomplete="off" placeholder="Dosis">
                     </div>
                     <div class="form-group">
-                        <label for=""> No. Rekening</label>
-                        <input type="text" onkeypress="return number(event)" class="form-control" autocomplete="off" id="rekening" name="rekening" placeholder="Rekening">
+                        <label for=""> Indikasi</label>
+                        <input type="text" class="form-control" id="indikasi" autocomplete="off" name="indikasi" placeholder="Indikasi">
                     </div>
                     <div class="form-group">
-                        <label for=""> Alamat</label>
-                        <textarea class="form-control" id="alamat" name="alamat" autocomplete="off" cols="30"></textarea>
+                        <label for=""> Kategori</label>
+                        <select name="kategori" id="kategori" class="form-control select2bs4">
+                            <option value="">Pilih Kategori</option>
+                            @foreach ($kategori as $item)
+                                <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for=""> Satuan</label>
+                        <select name="satuan" id="satuan" class="form-control select2bs4">
+                            <option value="">Pilih Satuan</option>
+                            @foreach ($satuan as $item)
+                                <option value="{{ $item->id }}">{{ $item->satuan }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" id="btn-tutup" class="btn btn-outline-light" data-dismiss="modal">Close</button>
@@ -101,25 +116,20 @@
                url: "{{ asset('js/bahasa.json') }}"
             },
             ajax : {
-                url : "{{route('supplier.index')}}"
+                url : "{{route('obat.index')}}"
             },
             columns: [
                 { data: 'nama', name: 'nama' },
-                { data: 'telp', name: 'telp' },
-                { data: 'email', name: 'email' },
-                { data: 'rekening', name: 'rekening' },
-                { data: 'alamat', name: 'alamat' },
+                { data: 'kode', name: 'kode' },
+                { data: 'dosis', name: 'dosis' },
+                { data: 'indikasi', name: 'indikasi' },
+                { data: 'kategoris', name: 'kategoris' },
+                { data: 'satuans', name: 'satuans' },
                 { data: 'aksi', name: 'aksi', orderable: false }
             ]
         })
     }
 
-    function number(evt) {
-        var charCode = (evt.which) ? evt.which : event.keyCode
-            if (charCode > 31 && (charCode < 48 || charCode > 57)) 
-                return false;
-            return true;
-    }
 
     $(document).on('submit', 'form', function (event) {
         event.preventDefault();
@@ -145,10 +155,10 @@
     
     // edit
     $(document).on('click', '.edit', function () {
-        $('#forms').attr('action',"{{route('supplier.updates')}}")
+        $('#forms').attr('action',"{{route('obat.updates')}}")
         let id = $(this).attr('id')
         $.ajax({
-            url : "{{ route('supplier.edits') }}",
+            url : "{{ route('obat.edits') }}",
             type : 'post',
             data : {
                 id : id,
@@ -158,12 +168,13 @@
                 //  console.log(res);
                  $('#id').val(res.id)
                  $('#nama').val(res.nama)
-                 $('#telp').val(res.telp)
-                 $('#alamat').val(res.alamat)
-                 $('#rekening').val(res.rekening)
-                 $('#email').val(res.email)
+                 $('#kode').val(res.kode)
+                 $('#dosis').val(res.dosis)
+                 $('#indikasi').val(res.indikasi)
+                 $('#kategori').val(res.kategori)
+                 $('#satuan').val(res.satuan)
                  $('#btn-tambah').click()
-                 
+
             },
             error : function (xhr) {
                 console.log(xhr);
@@ -186,7 +197,7 @@
             }).then((result) => {
             if (result.isConfirmed) {
                $.ajax({
-                    url : "{{ route('supplier.hapus') }}",
+                    url : "{{ route('obat.hapus') }}",
                     type : 'post',
                     data : {
                         id : id,
@@ -217,6 +228,5 @@
                 })
             }
         })
-    })
-
+    })   
 </script>

@@ -18,6 +18,9 @@
   {{-- <link rel="stylesheet" href={{asset("plugins/icheck-bootstrap/icheck-bootstrap.min.css")}}> --}}
   <!-- JQVMap -->
   {{-- <link rel="stylesheet" href={{asset("plugins/jqvmap/jqvmap.min.css")}}> --}}
+   <!-- Select2 -->
+  <link rel="stylesheet" href={{asset("plugins/select2/css/select2.min.css") }}>
+  <link rel="stylesheet" href={{asset("plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") }}>
   <!-- Theme style -->
   <link rel="stylesheet" href={{asset("dist/css/adminlte.min.css")}}>
   <!-- overlayScrollbars -->
@@ -107,7 +110,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{route('obat.index')}}" class="nav-link">
                     <i class="nav-icon fas fa-book-medical"></i>
                     <p>Katalog Obat</p>
                     </a>
@@ -393,6 +396,8 @@
 {{-- <script src={{ asset("plugins/daterangepicker/daterangepicker.js") }}></script> --}}
 
 {{-- <script src={{ asset("plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js") }}></script> --}}
+<!-- Select2 -->
+<script src={{ asset("plugins/select2/js/select2.full.min.js") }}></script>
 
 <script src={{ asset("plugins/summernote/summernote-bs4.min.js") }}></script>
 
