@@ -40,7 +40,7 @@
         <div class="modal-content bg-info">
             <div class="modal-header">
             <h4 class="modal-title">Data Supplier</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" id="btn-tutup" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -121,6 +121,14 @@
             return true;
     }
 
+    
+    //  $('#btn-tutup').click(function() {
+    //             //reset
+    //             $('#forms').find('input.form-control').val('');
+    //             $('#forms').find('select.form-control').val('');
+    //             // $('#modal-info').modal('show');
+    //         });
+
     $(document).on('submit', 'form', function (event) {
         event.preventDefault();
         $.ajax({
@@ -142,6 +150,12 @@
             }
         })
     })
+
+//    $('#btn-tambah').click(function() {
+//                 //reset
+//                 $('#forms').find('input.form-control').val('');
+//                  $('#btn-tambah').click();
+//             });
     
     // edit
     $(document).on('click', '.edit', function () {
@@ -163,6 +177,7 @@
                  $('#rekening').val(res.rekening)
                  $('#email').val(res.email)
                  $('#btn-tambah').click()
+                // $('#modal-info').modal('show')
                  
             },
             error : function (xhr) {

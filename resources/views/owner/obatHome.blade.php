@@ -153,6 +153,8 @@
         })
     })
     
+    
+
     // edit
     $(document).on('click', '.edit', function () {
         $('#forms').attr('action',"{{route('obat.updates')}}")
@@ -173,8 +175,7 @@
                  $('#indikasi').val(res.indikasi)
                  $('#kategori').val(res.kategori)
                  $('#satuan').val(res.satuan)
-                 $('#btn-tambah').click()
-
+                 $('#btn-tambah').click() 
             },
             error : function (xhr) {
                 console.log(xhr);
