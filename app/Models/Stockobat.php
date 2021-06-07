@@ -11,6 +11,7 @@ class Stockobat extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'namaObat',
         'masuk',
         'keluar',
@@ -18,17 +19,16 @@ class Stockobat extends Model
         'jual',
         'expired',
         'stock',
-        'keteranganStock',
+        'keterangan',
         'admin',
     ];
 
     public static function join()
     {
         $data = DB::table('stockobats')
-              ->join('obats', 'obats.id', 'stockobats.namaObat')
-              ->join('users', 'users.id', 'stockobats.admin')
-              ->select('stockobats.*', 'obats.nama as namaObat', 'users.name as admins')
-              ->get();
+            ->join('obats', 'obats.id', 'stockobats.namaObat')
+            ->join('users', 'users.id', 'stockobats.admin')
+            ->select('stockobats.*', 'obats.nama as namaObat', 'users.name as admins');
         return $data;
     }
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ObatController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StockObatController;
 
 /*
@@ -27,7 +28,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::group(['middleware' => ['role:owner']], function() {
+Route::group(['middleware' => ['role:owner']], function () {
     // Route::get('getSupplier', [SupplierController::class, 'getSupplier'])->name('supplier.getSupplier');
     Route::get('supplier.index', [SupplierController::class, 'index'])->name('supplier.index');
     Route::post('supplier.store', [SupplierController::class, 'store'])->name('supplier.store');
@@ -45,7 +46,14 @@ Route::group(['middleware' => ['role:owner']], function() {
     //route Stock obat
     Route::get('stock.index', [StockObatController::class, 'index'])->name('stock.index');
     Route::post('stock.store', [StockObatController::class, 'store'])->name('stock.store');
+    Route::post('stock.edits', [StockObatController::class, 'edits'])->name('stock.edits');
+    Route::post('stock.updates', [StockObatController::class, 'updates'])->name('stock.updates');
+    Route::post('stock.hapus', [StockObatController::class, 'hapus'])->name('stock.hapus');
     Route::post('getObat', [StockObatController::class, 'getObat'])->name('getObat');
+
+    //route Stock penjualan
+    Route::get('penjualan.index', [PenjualanController::class, 'index'])->name('penjualan.index');
+    // Route::post('getDataObat', [StockObatController::class, 'getDataObat'])->name('getDataObat');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

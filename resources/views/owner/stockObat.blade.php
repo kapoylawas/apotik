@@ -52,12 +52,14 @@
                         @csrf
                         <div class="form-group">
                             <label for=""> Pilih Obat</label>
-                            <select name="namaObat" id="namaObat" class="form-control select2bs4">
+                            <div id="divObat">
+                            <select class="form-control" data-width="100%" name="namaObat" id="obat" >
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($obat as $item)
                                     <option value="{{ $item->id }}">{{ $item->nama }}</option>
                                 @endforeach
                             </select>
+                            </div>
                         </div>
                         <div>
                             Stock Obat
@@ -66,7 +68,7 @@
                         <div class="row">
                             <div class="form-group col-md-4">
                                     <label class="mr-sm-2" for="inlineFormCustomSelect">Stock Awal</label>
-                                    <input type="text" class="form-control" readonly autocomplete="off" value="0" name="stocklama" id="stockLama" class="form-control">
+                                    <input type="text" class="form-control" readonly autocomplete="off" value="0" name="stocklama" id="stockAwal" class="form-control">
                                     <input type="hidden" hidden class="form-control" hidden autocomplete="off" name="id" id="id" hidden class="form-control">
                             </div> 
                             <div class="form-group col-md-4">
@@ -92,11 +94,11 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label class="mr-sm-2" for="inlineFormCustomSelect">Harga Beli</label>
-                            <input type="text" class="form-control" onkeypress="return number(event)" autocomplete="off" maxlength="12" name="beli" id="beli" class="form-control" placeholder="Harga Beli">
+                            <input  type="text" class="form-control" onkeypress="return number(event)" autocomplete="off" maxlength="12" name="beli" id="beli" class="form-control" placeholder="Harga Beli" data-inputmask="'alias': 'numeric', 'digits':2, 'prefix': 'Rp. ', 'groupSeparator': ',', 'autoGroup': true, 'digitsOptional' : false">
                         </div>
                         <div class="form-group col-md-6">
                             <label class="mr-sm-2" for="inlineFormCustomSelect">Harga Jual</label>
-                            <input type="text" class="form-control" onkeypress="return number(event)" autocomplete="off" maxlength="12" name="jual" id="jual" class="form-control" placeholder="Harga Jual">
+                            <input type="text" class="form-control" onkeypress="return number(event)" autocomplete="off" maxlength="12" name="jual" id="jual" class="form-control" placeholder="Harga Jual" data-inputmask="'alias': 'numeric', 'digits':2, 'prefix': 'Rp. ', 'groupSeparator': ',', 'autoGroup': true, 'digitsOptional' : false">
                         </div>
                     </div>
 
@@ -127,9 +129,11 @@
 <script src={{asset('dist\js\i18n\datepicker.en.js')}}></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function () {
         loaddata()
+        $('#obat').select2();
     })
 
     function loaddata() {
@@ -185,6 +189,35 @@
     })
 
 
+    $(document).on('click', '.edit', function () {
+        $('#forms').attr('action',"{{route('stock.updates')}}")
+        $('#btn-tambah').click()
+        // $('#forms').show()
+        let id = $(this).attr('id')
+        $.ajax({
+            url : "{{ route('stock.edits') }}",
+            type : 'post',
+            data : {
+                id : id,
+                _token : "{{ csrf_token() }}"
+            },success: function (res) {
+                let newOption = new Option(res.namaObat, res.id, true, true)
+                    $('#id').val(res.id)
+                    $('#obat').append(newOption).trigger('change');
+                    // $('#obat').prop('disabled', true)
+                    $('#beli').val(res.beli)
+                    $('#jual').val(res.jual)
+                    $('#stockAwal').val(res.stock)
+                    $('#keterangan').val(res.keterangan)
+                    $('#expired').val(res.expired)
+                console.log(res);
+            },
+            error : function (xhr) {
+                console.log(xhr);
+            }
+        })
+    })
+
     function number(evt) {
         var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode > 31 && (charCode < 48 || charCode > 57)) 
@@ -201,7 +234,7 @@
                 id : id,
                 _token : "{{ csrf_token() }}"
             },success: function (res) {
-                $('#stockLama').val(res.data.stock)
+                $('#stockAwal').val(res.data.stock)
                 console.log(res);
             },error: function (xhr) {
                 console.error(xhr);
@@ -210,18 +243,66 @@
     })
 
      $(document).on('blur', '#masuk', function () {
-         let awal = parseInt($('#stockLama').val())
+         let awal = parseInt($('#stockAwal').val())
          let masuk = parseInt($('#masuk').val())
          let keluar = parseInt($('#keluar').val())
          let akhir = (awal + masuk)- keluar
          $('#stock').val(akhir)
      })
      $(document).on('blur', '#keluar', function () {
-         let awal = parseInt($('#stockLama').val())
+         let awal = parseInt($('#stockAwal').val())
          let masuk = parseInt($('#masuk').val())
          let keluar = parseInt($('#keluar').val())
          let akhir = (awal + masuk)- keluar
          $('#stock').val(akhir)
      })
+
+// hapus
+    $(document).on('click', '.hapus', function () {
+        let id = $(this).attr('id')
+
+        Swal.fire({
+            title: 'Yakin Hapus?',
+            text: "Data Yang Terhapus Tidak Bisa Kembali!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+               $.ajax({
+                    url : "{{ route('stock.hapus') }}",
+                    type : 'post',
+                    data : {
+                        id : id,
+                        _token : "{{ csrf_token() }}"
+                    },
+                    success: function (res,status) {
+                        if (status = '200') {
+                            setTimeout(() => {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Data Berhasil Di Hapus',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then((res) => {
+                                  $('#tabel').DataTable().ajax.reload()
+                                })
+                            });
+                        }
+                    },
+                    error : function (xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'GAGAGL MENGHAPUS!',
+                            })
+                    }
+                })
+            }
+        })
+    })   
 
 </script>

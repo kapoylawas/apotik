@@ -28,6 +28,7 @@
   <link rel="stylesheet" href={{asset("plugins/overlayScrollbars/css/OverlayScrollbars.min.css")}}>
   <link rel="stylesheet" href={{asset("plugins/datatables/datatables.css")}}>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.2/dist/sweetalert2.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"> 
   <!-- Daterange picker -->
   {{-- <link rel="stylesheet" href={{asset("plugins/daterangepicker/daterangepicker.css")}}> --}}
@@ -153,7 +154,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('penjualan.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Penjualan Barang</p>
                 </a>
@@ -347,7 +348,7 @@
         </div> 
 
         <!-- Main content -->
-                    <div class="col-sm-12 bg-white border-b border-gray-100">
+                    <div class="col-sm-12 border-b border-gray-100">
                         {{ $slot }}
                     </div>    
         <!-- /.content -->

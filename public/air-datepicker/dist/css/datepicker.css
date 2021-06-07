@@ -181,10 +181,10 @@
   width: 300px;
   position: absolute;
   transform: translate(0, 3.1em);
-  /* position: relative !important; */
-  top: 80px !important;
-  height: 280px;
-  left: -100000px;
+  position: relative !important;
+  /* top: -10px !important; */
+  /* height: 280px; */
+  /* left: -100000px; */
 
   opacity: 0;
   transition: opacity 0.3s ease, left 0s 0.3s, -webkit-transform 0.3s ease;

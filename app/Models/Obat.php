@@ -27,4 +27,23 @@ class Obat extends Model
               ->get();
             return $data;
     }
+
+    // public static function joinStock()
+    // {
+    //     $data = DB::table('stockobats')
+    //         ->join('obats', 'obats.id', 'stockobats.namaObat')
+    //         ->select('stockobats.*', 'obats.nama as nama')
+    //         ->get();
+    //     return $data;
+    // }
+
+    public static function joinStock()
+    {
+        $data = DB::table('stockobats')
+            ->join('obats', 'obats.id', 'stockobats.namaObat')
+            ->select('stockobats.*', 'obats.nama as nama', 'obats.id as namaObat');
+            
+        return $data;
+    }
+
 }
